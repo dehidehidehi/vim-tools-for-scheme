@@ -27,15 +27,30 @@ Examples of such overhead include:
 
 # Installation
 
-## Requirements
+## 1. Dependencies 
 
 1. Compile and install with the [Vim compilation script](scripts/vim-compile.sh)
-1. 
+1. Execute the [Akku scheme package manager installation script](scripts/install-akku.sh)
+TODO make vimscript install akku if not detected on system?
+TODO make vimscript execute LspInstallServer racket-lsp
 
+1. 
+	" todo provide script to install Akku
+	" todo provide script to install racket lsp
+	" todo provide script to install chez Scheme lsp
+
+## 2. Adding the vim configuration
+
+1. Copy [vim-tools-for-scheme.vim](lib/vim-tools-for-scheme.vim) to some place on your disk.
+1. In your `.vimrc` add `source LOCATION_OF_VIM_TOOLS_FOR_SCHEME`
+1. Re-source your `.vimrc`
 
 # Credits
 
-- benkenoble
+- Vim Plugin        vim/simpl                   [https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
+- Function          ToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
+- Function          FindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
+                                                                                                                                                                                                                    et parens += [right]
 
 # Awesome Scheme projects
 
@@ -64,6 +79,29 @@ Examples of such overhead include:
 - [ ] ...
 - [ ] ...
 
+" Do note that the LSPs behave together nicely only when using r6rs
+	
+	" todo tackle LSP configurations
+	"
+	"
+	" readme document these vars
+	"
+		" au FileType Scheme,Racket let g:vtfs_repl_cols = 50
+		" au FileType Scheme,Racket let g:vtfs_repl_rows = 12
+	<!-- au FileType Scheme let g:vtfs_lsp_chez_scheme_multithread = 1 -->
+	<!-- au FileType Scheme let g:vtfs_lsp_chez_scheme_type_inference = 1 -->
+	document this variable let g:vtfs_my_vimrc = expand($MYVIMRC)
+	" readme provide default keyremaps for
+	" - togglelspdiagnostics
+	" - LSP mapping defaults
+	" - propose default mapping for loading the REPL
+	" - mapping for autocmd FileType scheme,racket inoremap <expr> ] FindMatchingParenType()
+	" - mapping for			au FileType Scheme inoremap <C-\> λ
+	"
+	
+	
+	
+	
 
 # Back-burner
 - [ ] Convert this all into a nicely packaged vim plugin
