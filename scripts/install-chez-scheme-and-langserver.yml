@@ -1,0 +1,128 @@
+---
+- name: Chez Scheme - Check if chez scheme is installed
+  stat:
+    path: "{{ usr_local }}/bin/scheme"
+  register: scheme_installed
+  ignore_errors: true
+  failed_when: false
+
+- name: Chez Scheme - Install
+  when: not scheme_installed.stat.exists
+  block:
+    - name: Chez - Build - Apt dependencies
+      become: true
+      apt:
+        name:
+          - netpbm
+
+    - name: Chez - Download repository
+      shell: "{{ shell }} -c 'git clone {{ chez_scheme_git_clone_params }} {{ chez_scheme_repository_url }} {{ tmp_dir }}/ChezScheme'"
+      failed_when: false
+      ignore_errors: true
+
+    - name: Chez - Build - Configure
+      command: "./configure --threads --kernelobj --enable-libffi --installdoc={{ home }}/.cache/chez-scheme/docs --installprefix={{ usr_local }}"
+      args:
+        chdir: "{{ tmp_dir }}/ChezScheme"
+
+    - name: Chez - Build - Make (slow)
+      command: "make -j{{ ansible_processor_vcpus }}"
+      args:
+        chdir: "{{ tmp_dir }}/ChezScheme"
+
+    - name: Chez - Build - Make install
+      command: make install
+      args:
+        chdir: "{{ tmp_dir }}/ChezScheme"
+
+- name: Chez - LSP - Dependencies - Akku - Check if Akku is installed
+  stat:
+    path: "{{ usr_local }}/bin/akku"
+  register: akku_installed
+  ignore_errors: true
+  failed_when: false
+
+- name: Chez - LSP - Dependencies - Akku - Install
+  when: not akku_installed.stat.exists
+  block:
+    - name: Akku - Download
+      get_url:
+        url: "{{ akku_download_url }}"
+        dest: "{{ tmp_dir }}/akku-{{ akku_version }}.tar.gz"
+
+    - name: Akku - Extract
+      unarchive:
+        src: "{{ tmp_dir }}/akku-{{ akku_version }}.tar.gz"
+        dest: "{{ tmp_dir }}"
+        remote_src: yes
+
+    - name: Akku - Install
+      command: "./install.sh"
+      args:
+        chdir: "{{ tmp_dir }}/akku-{{ akku_version }}.amd64-linux"
+
+    - name: Akku - Update indexes
+      command: akku update
+
+- name: Chez - LSP - Dependencies - Akku - Check if Chez Exe is installed
+  stat:
+    path: "{{ usr_local }}/bin/compile-chez-program"
+  register: chez_exe_installed
+  ignore_errors: true
+  failed_when: false
+
+- name: Chez - LSP - Dependencies - Chez Exe - Install
+  when: not chez_exe_installed.stat.exists
+  block:
+    - name: Chez Exe - Clone
+      git:
+        repo: "{{ chez_exe_repository_url }}"
+        dest: "{{ tmp_dir }}/chez_exe"
+        depth: 1
+        update: false
+      failed_when: false
+      ignore_errors: true
+
+    - name: Chez Exe - Build (slow)
+      command: "scheme --script gen-config.ss --prefix {{ usr_local }} --bootpath {{ chez_scheme_boot_dir }}"
+      args:
+        chdir: "{{ tmp_dir }}/chez_exe"
+        
+    - name: Chez Exe - Make install
+      command: "make install"
+      args:
+        chdir: "{{ tmp_dir }}/chez_exe"
+
+- name: Chez - LSP - Install
+  block:
+    - name: Chez - LSP - Clone scheme-langserver repository
+      git:
+        repo: "{{ chez_scheme_langserver_repository_url }}"
+        dest: "{{ tmp_dir }}/scheme-langserver"
+        clone: yes
+        update: no
+        version: master
+      failed_when: false
+      ignore_errors: true
+
+    - name: Chez - LSP - Install using Akku
+      command: akku install
+      args:
+        chdir: "{{ tmp_dir }}/scheme-langserver"
+
+    - name: Chez - LSP - Compile run.ss with akku env
+      shell: |
+        eval $(.akku/env -s)
+        compile-chez-program run.ss
+      args:
+        chdir: "{{ tmp_dir }}/scheme-langserver"
+
+    - name: Chez - LSP - Rename compiled run file to scheme-langserver
+      command: "mv run scheme-langserver"
+      args:
+        chdir: "{{ tmp_dir }}/scheme-langserver"
+
+    - name: Chez - LSP - Move scheme-langserver to PATH
+      command: "cp scheme-langserver {{ usr_local }}/bin"
+      args:
+        chdir: "{{ tmp_dir }}/scheme-langserver"
