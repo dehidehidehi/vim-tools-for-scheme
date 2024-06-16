@@ -39,7 +39,7 @@ Examples of such overhead include:
 
 # Awesome Scheme projects
 
- - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org]) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
+ - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org])) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
 
 # Other references
 
