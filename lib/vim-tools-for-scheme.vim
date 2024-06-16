@@ -1,23 +1,12 @@
-
-aug vim_tooling_for_scheme
+augroup vim_tooling_for_scheme
 	au!
+	set nocompatible
+	filetype plugin indent on 
 
-	aug vtfs_plugins
-		au FileType Scheme call plug#begin()
-		au FileType Scheme Plug 'honza/vim-snippets'
-		au FileType Scheme Plug 'sirver/ultisnips'
-		au FileType Scheme plug 'airblade/vim-rooter'                                  
-		au FileType Scheme plug 'dehidehidehi/vim-simpl',					{ 'branch': 'improvement/allow-do-load-to-pass-more-terminal-options' }
-		au FileType Scheme plug 'mattn/vim-lsp-settings'                               
-		au FileType Scheme plug 'prabirshrestha/asyncomplete-lsp.vim'                  
-		au FileType Scheme plug 'prabirshrestha/asyncomplete.vim'                      
-		au FileType Scheme plug 'prabirshrestha/vim-lsp'                               
-		au FileType Scheme call plug#end()
-		au FileType Scheme packloadall
-	aug END
-
-	aug vtfs_set_options
+	augroup vtfs_set_options
 		au!
+		au VimEnter Scheme syntax on
+		au BufRead,BufNewFile *.ss,*.scm,*.sls,*.sps set filetype=scheme
 		au FileType Scheme set completeopt=menuone,noinsert,noselect,preview
 		au FileType Scheme set lisp
 		au FileType Scheme set smartindent                                                  
@@ -27,34 +16,53 @@ aug vim_tooling_for_scheme
 		au FileType Scheme setlocal softtabstop=2                                                
 		au FileType Scheme setlocal tabstop=2
 		au FileType Scheme setlocal wrapmargin=0                                                 
-	aug END
+	augroup END
 
-	aug vtfs_rooter
+	augroup vtfs_plugins
+		au!
+		" Install vim-plug if not found
+		if empty(glob('~/.vim/autoload/plug.vim')) 
+			silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
+		endif
+		source $HOME/.vim/autoload/plug.vim
+    call plug#begin('~/.vim/plugged')
+    Plug 'honza/vim-snippets'
+    Plug 'sirver/ultisnips'
+    Plug 'airblade/vim-rooter'
+    Plug 'dehidehidehi/vim-simpl', { 'branch': 'improvement/allow-do-load-to-pass-more-terminal-options' }
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
+    Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/vim-lsp'
+    call plug#end()
+		packloadall
+		" Run PlugInstall if there are missing plugins
+		if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+			PlugInstall --sync
+			source expand('%:p')
+		endif
+	augroup END
+
+	augroup vtfs_rooter
 		au!
 		au FileType scheme let g:rooter_cd_cmd = 'cd'
 		au FileType scheme let g:rooter_silent_chdir = 0
 		au FileType scheme let g:rooter_resolve_links = 1
-		au FileType scheme let g:rooter_patterns = [
-					\ '>.git',
-					\ '.git',
-					\ '>Akku.manifest',
-					\ 'Akku.manifest',
-					\ ]
+		au FileType scheme let g:rooter_patterns = [ '>.git', '.git', '>Akku.manifest', 'Akku.manifest' ]
+	augroup END
 
-	aug END
-
-	aug vtfs_asyncomplete
+	augroup vtfs_asyncomplete
+		au!
 		au FileType scheme let g:asyncomplete_auto_popup = 1
 		au FileType scheme let g:asyncomplete_popup_delay = 200
 		au FileType scheme let g:asyncomplete_auto_completeopt = 1
 		au! CompleteDone * if pumvisible() == 0 | pclose | endif
-	aug END
+	augroup END
 
-	aug vtfs_ultisnips
+	augroup vtfs_ultisnips
+		au!
 		" Automatically creates user-specific snippets dir if it doesn't exist
-		au FileType scheme if !isdirectory($HOME."/.vim/".$USER."-snippets") |
-					\ call mkdir($HOME."/.vim/".$USER."-snippets", "p") |
-					\ endif
+		au FileType scheme if !isdirectory($HOME."/.vim/".$USER."-snippets") | call mkdir($HOME."/.vim/".$USER."-snippets", "p") | endif
 		au FileType scheme let g:UltiSnipsEditSplit = "tabdo"
 		au FileType scheme let g:UltiSnipsEnableSnipMate = 1                               						
 		au FileType scheme let g:UltiSnipsExpandTrigger="<tab>"
@@ -65,9 +73,15 @@ aug vim_tooling_for_scheme
 		" This means that any custom snippets you make will be saved to the following dir.
 		" This means that on top of sourcing snippets from third parties, snippets will also be sources from here if specified in g:UltiSnipsSnippetDirectories.
 		au FileType scheme let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit = $HOME."/.vim/".$USER."-snippets"
-	aug END
+	augroup END
 
-	" todo first try and see if the above imports and executes properly
+	" testing the configuration with
+	" vim -u lib/vim-tools-for-scheme.vim testing.ss
 	" I was here about to tackle LSP configurations
-aug END
+	"
+	" todo provide script to install Akku
+	" todo provide script to install racket lsp
+	" todo provide script to install chez scheme lsp
+	
+augroup END
 
