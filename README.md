@@ -1,6 +1,6 @@
 # Vim tools for Scheme
 
-The developper experience for Lisps, and in this case Scheme, is painful.  
+The developper experience for Scheme using vanilla Vim is painful.
 The goal of this repository is to provide a modern developper experience in Vim for making Scheme applications.
 
 # Solutions 
