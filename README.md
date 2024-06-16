@@ -23,6 +23,7 @@ Examples of such overhead include:
 - The tooling which exists requires far too much time to configure.
 - Some tooling is specific to the Scheme language.
 - Some tooling is specific to the RNRS standard used.
+- ... and last but not least, the developper is forced to develop their own tooling which are usually provided in other more popular languages, which may be demoralizing.
 
 # Installation
 
