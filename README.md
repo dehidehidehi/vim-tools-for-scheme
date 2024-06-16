@@ -24,15 +24,28 @@ Examples of such overhead include:
 - Some tooling is specific to the Scheme language.
 - Some tooling is specific to the RNRS standard used.
 
-# Credits and related projects
+# Installation
+
+## Requirements
+
+1. Compile and install with the [Vim compilation script](scripts/vim-compile.sh)
+1. 
+
+
+# Credits
 
 - benkenoble
 
+# Awesome Scheme projects
+
+ - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org]) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
+
+# Other references
+
+- [Building Vim from source](https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source)
+- [Compiling Vim](https://richrose.dev/posts/linux/vim/vim-compile/)
+
 # TODO list
-
-## define requirements
-
-- [ ] vim9 build script?
 
 ## a new vim rc file to include
 
