@@ -1,7 +1,8 @@
 # Vim tools for Scheme
 
-The developper experience for Scheme using vanilla Vim is painful.
-The goal of this repository is to provide a modern developper experience in Vim for making Scheme applications.
+The developper experience for Scheme using vanilla Vim is painful.  
+The goal of this repository is to provide a modern developper experience in Vim for making RNRS compliant Scheme applications.  
+Specifically R6RS.  
 
 # Solutions 
 
@@ -45,64 +46,64 @@ TODO make vimscript execute LspInstallServer racket-lsp
 1. In your `.vimrc` add `source LOCATION_OF_VIM_TOOLS_FOR_SCHEME`
 1. Re-source your `.vimrc`
 
+# Usage
+
+## Default Keybindings
+
+All default mappings are rebindable using, for example:  
+```vim
+au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>        
+```
+
+### Normal mode default keybindings
+
+- `VtfsLspToggleDiagnostics`    -> `<leader>W`
+- `VtfsReplLoad`                -> `<leader>l`
+- `VtfsFindMatchingParenType`   -> `]`
+
+### Insert mode default keybindings
+
+- `<C-\>`                       -> `λ`
+
+### Normal mode LSP default keybindings
+
+The documentation for the LSP supported commands is available in the [vim-lsp repository](https://github.com/prabirshrestha/vim-lsp?tab=readme-ov-file#supported-commands).  
+
+
+`LspCodeAction`                 -> `<leader>a`
+`LspDefinition`                 -> `<leader>D`
+`LspHover`                      -> `<leader>k`
+`LspNextDiagnostic`             -> `<leader>n`
+`LspNextError`                  -> `<leader>e`
+`LspPeekDefinition`             -> `<leader>d`
+`LspPreviousDiagnostic`         -> `<leader>p`
+`LspPreviousError`              -> `<leader>E`
+`LspReferences`                 -> `<leader>b`
+`LspRename`                     -> `<leader>r`
+
 # Credits
 
 - Vim Plugin        vim/simpl                   [https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
-- Function          ToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
-- Function          FindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
+- Function          VtfsToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
+- Function          VtfsFindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
                                                                                                                                                                                                                     et parens += [right]
 
-# Awesome Scheme projects
+# References
 
  - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org])) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
-
-# Other references
-
 - [Building Vim from source](https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source)
 - [Compiling Vim](https://richrose.dev/posts/linux/vim/vim-compile/)
 
 # TODO list
 
-## a new vim rc file to include
-
-- [ ] move all my lisp and scheme config into a separate rc file
-- [ ] organize the rc file
-- [ ] make sure everything is in augroups and overridable and commented and credited 
-- [ ] finalize LSP configuration for Scheme
-
-## scripts to install external tooling
-
-- [ ] ...
-- [ ] ...
-- [ ] ...
-- [ ] ...
-- [ ] ...
-- [ ] ...
-
-" Do note that the LSPs behave together nicely only when using r6rs
-	
-    provide script to install and build the chez-scheme lsp? 
-	" todo tackle LSP configurations
-	"
-	"
-	" readme document these vars
-	"
-		" au FileType Scheme,Racket let g:vtfs_repl_cols = 50
-		" au FileType Scheme,Racket let g:vtfs_repl_rows = 12
-	<!-- au FileType Scheme let g:vtfs_lsp_chez_scheme_multithread = 1 -->
-	<!-- au FileType Scheme let g:vtfs_lsp_chez_scheme_type_inference = 1 -->
-	document this variable let g:vtfs_my_vimrc = expand($MYVIMRC)
-	" readme provide default keyremaps for
-	" - togglelspdiagnostics
-	" - LSP mapping defaults
-	" - propose default mapping for loading the REPL
-	" - mapping for autocmd FileType scheme,racket inoremap <expr> ] FindMatchingParenType()
-	" - mapping for			au FileType Scheme inoremap <C-\> λ
-	"
-	
-	
-	
-	
-
-# Back-burner
-- [ ] Convert this all into a nicely packaged vim plugin
+- [ ] Provide build scripts and LSP configuration for `scheme-langserver`
+- [ ] Convert to a proper Vim plugin.
+- [ ] Provide functions and keybindings for RNRS documentation pop-ups from within Vim.
+- [ ] Document then allow redefinition of the following configuration variables:  
+```vim
+let g:vtfs_my_vimrc = expand($MYVIMRC)
+au FileType Scheme,Racket let g:vtfs_repl_cols = 50
+au FileType Scheme,Racket let g:vtfs_repl_rows = 12
+au FileType Scheme let g:vtfs_lsp_chez_scheme_multithread = 1
+au FileType Scheme let g:vtfs_lsp_chez_scheme_type_inference = 1
+```
