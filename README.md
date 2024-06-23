@@ -81,6 +81,7 @@ TODO make vimscript execute LspInstallServer racket-lsp
 
 " Do note that the LSPs behave together nicely only when using r6rs
 	
+    provide script to install and build the chez-scheme lsp? 
 	" todo tackle LSP configurations
 	"
 	"
