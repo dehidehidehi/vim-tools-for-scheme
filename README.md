@@ -33,13 +33,24 @@ Examples of such overhead include:
 1. Compile and install with the [Vim compilation script](scripts/vim-compile.sh)
 1. Execute the [Akku scheme package manager installation script](scripts/install-akku.sh)
 
-## 2. Adding the vim configuration
+## 2. Optional : testing
+
+To try this configuration before incorporating it in your vimrc, you may execute the following command which will only load configurations from this package :  
+
+```bash
+# first cd into the root of this repository
+vim -u lib/vim-tools-for-scheme.vim /tmp/testing-scheme.sps
+```
+
+# Usage
+
+## Installation
+
+### Adding the vim configuration
 
 1. Copy [vim-tools-for-scheme.vim](lib/vim-tools-for-scheme.vim) to some place on your disk.
 1. In your `.vimrc` add `source LOCATION_OF_VIM_TOOLS_FOR_SCHEME`
 1. Re-source your `.vimrc`
-
-# Usage
 
 ## Default Keybindings
 
@@ -93,6 +104,9 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 
 # TODO list
 
+1. [ ] Fix the `<leader>l` REPL command.
+1. [ ] Test all default keybindings.
+1. [ ] Do first release.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`

@@ -250,4 +250,40 @@ augroup vtfs_lsp_helper_functions " {{{
 
 augroup END " }}}
 
+augroup vtrs_default_keybindings
+	au!
+
+	if !exists('g:mapleader') 		
+		au FileType scheme,racket let mapleader = " "
+       	endif
+	if !exists('g:maplocalleader') 
+	       	au FileType scheme,racket let maplocalleader = " " 
+       	endif
+
+	" Repl
+	au FileType scheme,racket nnoremap <leader>l :w<CR>:call simpl#load('++close ++cols=50 ++rows=' . (winheight(0) < 30 ? 7 : 12))<CR><C-w>p
+
+	" Autoclose paren type
+	au FileType scheme,racket inoremap <expr> ] VtfsFindMatchingParenType()
+
+	" Insert lambda symbol
+	au FileType scheme,racket inoremap <C-\> λ
+
+	" ToggleLspDiagnostics
+	au Filetype scheme,racket nnoremap <leader>W 	:VtfsLspToggleDiagnostics<CR>
+
+	" Lsp default keybindings
+	au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>        
+	au FileType scheme,racket nnoremap <leader>b	:LspReferences<CR>        
+	au FileType scheme,racket nnoremap <leader>k	:LspHover<CR>             
+	au FileType scheme,racket nnoremap <leader>n	:LspNextDiagnostic<CR>    
+	au FileType scheme,racket nnoremap <leader>p	:LspPreviousDiagnostic<CR>
+	au FileType scheme,racket nnoremap <leader>D	:LspDefinition<CR>    
+	au FileType scheme,racket nnoremap <leader>d	:LspPeekDefinition<CR>    
+	au FileType scheme,racket nnoremap <leader>r	:LspRename<CR>            
+	au FileType scheme,racket nnoremap <leader>e	:LspNextError<CR>         
+	au FileType scheme,racket nnoremap <leader>E	:LspPreviousError<CR>     
+
+augroup END
+
 " vim:foldmethod=marker:
