@@ -50,16 +50,21 @@ au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>
 
 ### Normal mode default keybindings
 
-- `VtfsReplLoad`                -> `<leader>l`
-- `VtfsFindMatchingParenType`   -> `]`
+- `VtfsReplLoad`                -> `<leader>l`  
+   Opens your Scheme REPL and evaluates the contents of the buffer into the REPL.
+- `VtfsFindMatchingParenType`   -> `]`  
+   Automatically closes a statement with the proper closing bracket, parenthesis, etc.  
 
 ### Insert mode default keybindings
 
-- `<C-\>`                       -> `λ`
+- `<C-\>`                       -> `λ`  
+  Shortcut for inserting the lambda symbol.
+
 
 ### Normal mode LSP default keybindings
 
-- `VtfsLspToggleDiagnostics`    -> `<leader>W`
+- `VtfsLspToggleDiagnostics`    -> `<leader>W`  
+  Hides/Unhides the LSP diagnostics which may hinder code readability.
 
 The documentation for the LSP supported commands is available in the [vim-lsp repository](https://github.com/prabirshrestha/vim-lsp?tab=readme-ov-file#supported-commands).  
 
