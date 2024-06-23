@@ -32,13 +32,6 @@ Examples of such overhead include:
 
 1. Compile and install with the [Vim compilation script](scripts/vim-compile.sh)
 1. Execute the [Akku scheme package manager installation script](scripts/install-akku.sh)
-TODO make vimscript install akku if not detected on system?
-TODO make vimscript execute LspInstallServer racket-lsp
-
-1. 
-	" todo provide script to install Akku
-	" todo provide script to install racket lsp
-	" todo provide script to install chez Scheme lsp
 
 ## 2. Adding the vim configuration
 
@@ -57,7 +50,6 @@ au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>
 
 ### Normal mode default keybindings
 
-- `VtfsLspToggleDiagnostics`    -> `<leader>W`
 - `VtfsReplLoad`                -> `<leader>l`
 - `VtfsFindMatchingParenType`   -> `]`
 
@@ -67,19 +59,20 @@ au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>
 
 ### Normal mode LSP default keybindings
 
+- `VtfsLspToggleDiagnostics`    -> `<leader>W`
+
 The documentation for the LSP supported commands is available in the [vim-lsp repository](https://github.com/prabirshrestha/vim-lsp?tab=readme-ov-file#supported-commands).  
 
-
-`LspCodeAction`                 -> `<leader>a`
-`LspDefinition`                 -> `<leader>D`
-`LspHover`                      -> `<leader>k`
-`LspNextDiagnostic`             -> `<leader>n`
-`LspNextError`                  -> `<leader>e`
-`LspPeekDefinition`             -> `<leader>d`
-`LspPreviousDiagnostic`         -> `<leader>p`
-`LspPreviousError`              -> `<leader>E`
-`LspReferences`                 -> `<leader>b`
-`LspRename`                     -> `<leader>r`
+- `LspCodeAction`                 -> `<leader>a`
+- `LspDefinition`                 -> `<leader>D`
+- `LspHover`                      -> `<leader>k`
+- `LspNextDiagnostic`             -> `<leader>n`
+- `LspNextError`                  -> `<leader>e`
+- `LspPeekDefinition`             -> `<leader>d`
+- `LspPreviousDiagnostic`         -> `<leader>p`
+- `LspPreviousError`              -> `<leader>E`
+- `LspReferences`                 -> `<leader>b`
+- `LspRename`                     -> `<leader>r`
 
 # Credits
 
@@ -87,7 +80,6 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 - Function          VtfsToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
 - Function          VtfsFindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
                                                                                                                                                                                                                     et parens += [right]
-
 # References
 
  - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org])) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
@@ -96,10 +88,12 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 
 # TODO list
 
-- [ ] Provide build scripts and LSP configuration for `scheme-langserver`
-- [ ] Convert to a proper Vim plugin.
-- [ ] Provide functions and keybindings for RNRS documentation pop-ups from within Vim.
-- [ ] Document then allow redefinition of the following configuration variables:  
+1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
+1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
+1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`
+1. [ ] Convert to a proper Vim plugin.
+1. [ ] Provide functions and keybindings for RNRS documentation pop-ups from within Vim.
+1. [ ] Document then allow redefinition of the following configuration variables:  
 ```vim
 let g:vtfs_my_vimrc = expand($MYVIMRC)
 au FileType Scheme,Racket let g:vtfs_repl_cols = 50
