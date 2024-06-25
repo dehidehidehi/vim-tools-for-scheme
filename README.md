@@ -15,6 +15,22 @@ This repository aims to provide a good developper experience for Scheme:
 - a remap for the ']' key to automatically close parenthesis or brackets.
 - sane and overridable REPL defaults with library path detection using Akku.
 
+## Also included
+
+### A better Netrw
+
+This opiniated package also provides settings and extra (more convenient) remappings for Netrw, the file system tray for Vim.  
+Netrw keyboard mappings may seem unintuitive.  
+You may refer to this great article for documentation on the remappings : [Using Netrw, the Vim built-in file explorer](https://vonheikemen.github.io/devlog/tools/using-netrw-vim-builtin-file-explorer/)
+These will be something you may disable in an upcoming release.  
+
+Some examples of provided remaps :  
+- normal mode:   `<C-n>`       -> Open Netrw
+- netrw:        `ff`        -> create new file in current dir
+- netrw:        `FF`        -> delete file under cursor
+- netrw:        `dd`        -> create new dir in current dir
+- netrw:        `DD`        -> delete dir under cursor
+
 # Motivation
 
 Setting up a developping environment for Scheme requires many days of configuration for the developper who just wants to make a program.  
@@ -107,18 +123,16 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 - Vim Plugin        vim/simpl						[https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
 - Function          VtfsToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
 - Function          VtfsFindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
-- Vim Gist          better-netrw                    [https://gist.github.com/VonHeikemen/fa6f7c7f114bc36326cda2c964cb52c7](https://gist.github.com/VonHeikemen/fa6f7c7f114bc36326cda2c964cb52c7)
-                                                                                                                                                                                                                    et parens += [right]
+- Vim Gist          better-netrw                    [https://vonheikemen.github.io/devlog/tools/using-netrw-vim-builtin-file-explorer/](https://vonheikemen.github.io/devlog/tools/using-netrw-vim-builtin-file-explorer/)
+
 # References
 
- - [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org])) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
+- [The Scheme Index](https://index.scheme.org) ([repository](https://github.com/schemeorg-community/index.scheme.org])) : The Scheme index allows searching for Scheme procedures, syntax and constants through types, tags, and names.
 - [Building Vim from source](https://github.com/ycm-core/YouCompleteMe/wiki/Building-Vim-from-source)
 - [Compiling Vim](https://richrose.dev/posts/linux/vim/vim-compile/)
 
 # TODO list
 
-1. [ ] Test all default keybindings.
-1. [ ] Do first release.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`

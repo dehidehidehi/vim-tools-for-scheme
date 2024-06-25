@@ -1,5 +1,5 @@
 augroup vtfs_sanity " {{{
-	" Required
+	" Required, just in case.
 	au!
 	set nocompatible
 	filetype plugin indent on 
@@ -19,8 +19,10 @@ augroup END " }}}
 augroup vtfs_set_options	" {{{
 	au!
 	au VimEnter Scheme syntax on
-	au BufRead,BufNewFile *.ss,*.scm,*.sls,*.sps set filetype=scheme
-
+	au BufEnter,BufNewFile *.ss set filetype=scheme
+	au BufEnter,BufNewFile *.scm set filetype=scheme
+	au BufEnter,BufNewFile *.sls set filetype=scheme
+	au BufEnter,BufNewFile *.sps set filetype=scheme
 	au FileType scheme set completeopt=menuone,noinsert,noselect,preview
 	au FileType scheme setlocal foldmethod=marker
 	au FileType scheme setlocal smartindent                                                  
