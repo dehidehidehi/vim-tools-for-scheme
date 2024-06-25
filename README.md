@@ -19,9 +19,10 @@ This repository aims to provide a good developper experience for Scheme:
 
 ### A better Netrw
 
-This opiniated package also provides settings and extra (more convenient) remappings for Netrw, the file system tray for Vim.  
+This opiniated package also provides settings and extra (more convenient) remappings for Netrw, the file system tray for Vim.   
 Netrw keyboard mappings may seem unintuitive.  
-You may refer to this great article for documentation on the remappings : [Using Netrw, the Vim built-in file explorer](https://vonheikemen.github.io/devlog/tools/using-netrw-vim-builtin-file-explorer/)
+You may refer to this great article for documentation on the remappings : [Using Netrw, the Vim built-in file explorer](https://vonheikemen.github.io/devlog/tools/using-netrw-vim-builtin-file-explorer/)  
+
 These will be something you may disable in an upcoming release.  
 
 Some examples of provided remaps :  
