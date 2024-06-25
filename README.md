@@ -56,26 +56,19 @@ To try this configuration before incorporating it in your vimrc, you may execute
 
 ### Vanilla
 
-This should open a vim buffer with a Scheme `Hello world` program.  
-Try using the `<leader>l` remap to execute the program in a REPL buffer :)  
-You should be prompted to install the Racket LSP.  
-You should be able to see syntax highlighting provided by the LSP.
-
 ```zsh
 echo '#!r6rs
 (import (rnrs))
 (display "Hello, world!")' > /tmp/testing-vim-tools-for-scheme/testing-scheme.sps
 vim -u lib/vim-tools-for-scheme.vim /tmp/testing-vim-tools-for-scheme/test-scheme.sps
 ```
-### Or with the Akku package manager
 
 This should open a vim buffer with a Scheme `Hello world` program.  
-This also happens to load the buffer with a Scheme library path, managed by Akku.  
+Try using the `<leader>l` remap to execute the program in a REPL buffer :)  
 You should be prompted to install the Racket LSP.  
 You should be able to see syntax highlighting provided by the LSP.
 
-Try using the `<leader>l` remap to execute the program in a REPL buffer :)  
-Try installing a package using the shell command `akku install <package>`, adding the `import` in the file, then executing it using `<leader>l` in the REPL; the REPL should be able to execute the Scheme source file and import the library.
+### Or with the Akku package manager
 
 ```zsh
 akku init /tmp/testing-vim-tools-for-scheme
@@ -84,6 +77,14 @@ echo '#!r6rs
 (display "Hello, world!")' > /tmp/testing-vim-tools-for-scheme/testing-scheme.sps
 vim -u lib/vim-tools-for-scheme.vim /tmp/testing-vim-tools-for-scheme/testing-scheme.sps
 ```
+
+This should open a vim buffer with a Scheme `Hello world` program.  
+This also happens to load the buffer with a Scheme library path, managed by Akku.  
+You should be prompted to install the Racket LSP.  
+You should be able to see syntax highlighting provided by the LSP.
+
+Try using the `<leader>l` remap to execute the program in a REPL buffer :)  
+Try installing a package using the shell command `akku install <package>`, adding the `import` in the file, then executing it using `<leader>l` in the REPL; the REPL should be able to execute the Scheme source file and import the library.
 
 # Usage
 
