@@ -5,6 +5,17 @@ augroup vtfs_sanity " {{{
 	filetype plugin indent on 
 augroup END " }}}
 
+augroup vtfs_user_settings " {{{
+	au!
+	" let g:vtfs_my_vimrc = empty(expand('$MYVIMRC')) ? expand('~/.vimrc') : expand('$MYVIMRC')
+	au VimEnter * let g:vtfs_lsp_chez_scheme_type_inference = 1
+	au VimEnter * let g:vtfs_lsp_chez_scheme_multithread = 1
+	au Filetype netrw let b:vtfs_enable_netrw_settings = 1
+	au Filetype netrw let b:vtfs_enable_netrw_mappings = 1
+	au FileType scheme,racket let g:vtfs_repl_rows = 12
+	au FileType scheme,racket let g:vtfs_repl_cols = 50
+augroup END " }}}
+
 augroup vtfs_set_options	" {{{
 	au!
 	au VimEnter Scheme syntax on
@@ -79,11 +90,10 @@ augroup END " }}}
 
 augroup vtfs_repl " {{{
 	au!
-	au FileType scheme,racket let g:vtfs_repl_cols = 50
-	au FileType scheme,racket let g:vtfs_repl_rows = 12
 	au FileType scheme,racket let b:simpl_mods = (winwidth(0) < 150 ? 'botright' : 'vertical')
-	au FileType scheme,racket command! VtfsReplLoad execute "normal! :w\<CR>:call simpl#load('++close ++cols=".g:vtfs_repl_cols." ++rows=" . (winheight(0) < 30 ? ceil(g:vtfs_repl_rows * 0.66) : g:vtfs_repl_rows)."')\<CR>\<C-w>p'"
-	au FileType scheme let b:interpreter = ".akku/env scheme --quiet --compile-imported-libraries"
+	au FileType scheme,racket command! VtfsReplLoad execute "normal! :w\<CR>:call simpl#load('++cols=".g:vtfs_repl_cols." ++rows=" . (winheight(0) < 30 ? ceil(g:vtfs_repl_rows * 0.66) : g:vtfs_repl_rows)."')\<CR>\<C-w>p'"
+	" au FileType scheme let b:interpreter = "scheme --quiet"
+	au FileType scheme let b:interpreter = (isdirectory(".akku") ? ".akku/env " : "") . "scheme --quiet --compile-imported-libraries"
 	au FileType scheme call simpl#register(
 				\ 'scheme',
 				\ { s -> printf("\n(load \"%s\")\n", s)},
@@ -146,9 +156,6 @@ augroup END " }}}
 
 augroup vtfs_lsp_chez_scheme " {{{
 	au!
-	au VimEnter * let g:vtfs_lsp_chez_scheme_multithread = 1
-	au VimEnter * let g:vtfs_lsp_chez_scheme_type_inference = 1
-
 	" Register scheme-langserver if it is installed
 	if (executable('scheme-langserver'))
 		au VimEnter * let g:scheme_langserver_logs_file = g:lsp_logs_dir . '/scheme-langserver-' . g:today . '.log'
@@ -170,7 +177,6 @@ augroup vtfs_lsp_chez_scheme " {{{
 	" " The chez_scheme langserver crashes often, let's create a loop which
 	" " detects that then automatically boot it back up, asyncronously.
 	" au BufEnter,BufRead,BufNewFile *.ss,*.scm,*.sls,*.sps call timer_start(0, {-> s:VtfsLspChezSchemeStatus()})
-	" let g:vtfs_my_vimrc = empty(expand('$MYVIMRC')) ? expand('~/.vimrc') : expand('$MYVIMRC')
 	" function! s:VtfsLspChezSchemeStatus() abort
 	" 	call timer_start(0, {-> s:VtfsLspChezSchemeStatusAsync()})
 	" endfunction
@@ -250,7 +256,76 @@ augroup vtfs_lsp_helper_functions " {{{
 
 augroup END " }}}
 
-augroup vtrs_default_keybindings
+augroup vtfs_netrw " {{{
+	au!
+	function! VtfsEnableOptionatedNetrwMappings() " {{{
+		" Go to file and close Netrw window
+		" nmap <buffer> L <CR>:Rex<CR>
+		" Go back in history
+		autocmd Filetype netrw nmap <buffer> H u                                              
+		" Go up a directory
+		autocmd Filetype netrw nmap <buffer> h -^                                             
+		" Go down a directory / open file
+		" Toggle dotfiles
+		autocmd Filetype netrw nmap <buffer> . gh                                             
+		" Toggle the mark on a file
+		autocmd Filetype netrw nmap <buffer> <TAB> mf
+		" Unmark all files in the buffer
+		" autocmd Filetype netrw nmap <buffer> <S-TAB> mF                                       
+		" Unmark all files
+		autocmd Filetype netrw nmap <buffer> <leader><TAB> mu                                 
+		" 'Bookmark' a directory
+		autocmd Filetype netrw nmap <buffer> bb mb                                            
+		" Delete the most recent directory bookmark
+		autocmd Filetype netrw nmap <buffer> bd mB                                            
+		" Got to a directory on the most recent bookmark
+		autocmd Filetype netrw nmap <buffer> bl gb                                            
+		" Create a file
+		autocmd Filetype netrw nmap <buffer> ff %:w<CR>:buffer #<CR>                          
+		" Rename a file
+		autocmd Filetype netrw nmap <buffer> fe R                                             
+		" Copy marked files in the directory under cursor
+		autocmd Filetype netrw nmap <buffer> fc mtmc                                          
+		" Move marked files in the directory under cursor
+		autocmd Filetype netrw nmap <buffer> fx mtmm                                          
+		" Execute a command on marked files
+		autocmd Filetype netrw nmap <buffer> f; mx                                            
+		" Show the list of marked files
+		autocmd Filetype netrw nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR> 
+		" Show the current target directory
+		autocmd Filetype netrw nmap <buffer> fq :echo 'Target:' . netrw#Expose("netrwmftgt")<CR> 
+		" Set the directory under the cursor as the current target
+		autocmd Filetype netrw nmap <buffer> fd mtfq                                          
+		" Delete a file
+		autocmd Filetype netrw nmap <buffer> FF :call NetrwRemoveRecursive()<CR>              
+		" Close the preview window
+		autocmd Filetype netrw nmap <buffer> P <C-w>z                                         
+		" Open all selected files in a new tab
+		autocmd Filetype netrw nmap <silent> <buffer> <C-t> ma:argdo tabnew<CR>
+	endfunction " }}}
+
+	function! VtfsEnableOptionatedNetrwSettings() " {{{
+		" Hide dotfiles
+		au FileType netrw let g:netrw_list_hide = netrw_gitignore#Hide() . '*\+\.swp,*\+\.un~'
+		" This solves the problem with the 'move' command
+		" Sync current directory and browsing directory
+		autocmd FileType netrw let g:netrw_keepdir = 0
+		autocmd FileType netrw let g:netrw_fastbrowse = 0
+		autocmd FileType netrw let g:netrw_banner = 0
+		autocmd FileType netrw let g:netrw_browse_split = 0
+		autocmd FileType netrw let g:netrw_hide = 1
+		autocmd FileType netrw let g:netrw_liststyle = 0
+		autocmd FileType netrw let g:netrw_sizestyle = "H"
+		autocmd FileType netrw let g:netrw_winsize = 20
+		" A better copy command
+		autocmd FileType netrw let g:netrw_localcopydircmd = 'cp -r'	 
+	endfunction " }}}
+	
+	au FileType netrw if b:vtfs_enable_netrw_mappings == 1 | call VtfsEnableOptionatedNetrwMappings() | endif
+	au FileType netrw if b:vtfs_enable_netrw_settings == 1 | call VtfsEnableOptionatedNetrwSettings() | endif
+augroup END " }}}
+
+augroup vtrs_default_keybindings " {{{
 	au!
 
 	if !exists('g:mapleader') 		
@@ -261,10 +336,12 @@ augroup vtrs_default_keybindings
        	endif
 
 	" Repl
-	au FileType scheme,racket nnoremap <leader>l :w<CR>:call simpl#load('++close ++cols=50 ++rows=' . (winheight(0) < 30 ? 7 : 12))<CR><C-w>p
+	au FileType scheme,racket silent nnoremap <leader>l :VtfsReplLoad<CR>
 
 	" Autoclose paren type
 	au FileType scheme,racket inoremap <expr> ] VtfsFindMatchingParenType()
+
+	au FileType scheme,racket nnoremap <C-n> :Ex<CR>
 
 	" Insert lambda symbol
 	au FileType scheme,racket inoremap <C-\> λ
@@ -284,6 +361,6 @@ augroup vtrs_default_keybindings
 	au FileType scheme,racket nnoremap <leader>e	:LspNextError<CR>         
 	au FileType scheme,racket nnoremap <leader>E	:LspPreviousError<CR>     
 
-augroup END
+augroup END " }}}
 
 " vim:foldmethod=marker:

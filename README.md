@@ -37,9 +37,19 @@ Examples of such overhead include:
 
 To try this configuration before incorporating it in your vimrc, you may execute the following command which will only load configurations from this package :  
 
-```bash
-# first cd into the root of this repository
-vim -u lib/vim-tools-for-scheme.vim /tmp/testing-scheme.sps
+### Vanilla
+
+```zsh
+vim -u lib/vim-tools-for-scheme.vim test-scheme.sps
+```
+### Or with the Akku package manager
+
+```zsh
+akku init /tmp/testing-vim-tools-for-scheme
+echo '#!r6rs
+(import (rnrs))
+(display "Hello, world!")' > /tmp/testing-vim-tools-for-scheme/testing-scheme.sps
+vim -u lib/vim-tools-for-scheme.vim /tmp/testing-vim-tools-for-scheme/testing-scheme.sps
 ```
 
 # Usage
@@ -63,11 +73,13 @@ au FileType scheme,racket nnoremap <leader>a	:LspCodeAction<CR>
 
 - `VtfsReplLoad`                -> `<leader>l`  
    Opens your Scheme REPL and evaluates the contents of the buffer into the REPL.
-- `VtfsFindMatchingParenType`   -> `]`  
-   Automatically closes a statement with the proper closing bracket, parenthesis, etc.  
+- `Open Netrw (:Ex)`            -> `<C-n>`
+   Opens the file tray (Netrw) at the project root.
 
 ### Insert mode default keybindings
 
+- `VtfsFindMatchingParenType`   -> `]`  
+   Automatically closes a statement with the proper closing bracket, parenthesis, etc.  
 - `<C-\>`                       -> `λ`  
   Shortcut for inserting the lambda symbol.
 
@@ -92,9 +104,10 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 
 # Credits
 
-- Vim Plugin        vim/simpl                   [https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
+- Vim Plugin        vim/simpl						[https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
 - Function          VtfsToggleLspDiagnostics        [https://github.com/prabirshrestha/vim-lsp/issues/1312](https://github.com/prabirshrestha/vim-lsp/issues/1312)
 - Function          VtfsFindMatchingParen           [https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead](https://gist.github.com/plane/8c872ed174ba4f026b95ea8eb934cead)
+- Vim Gist          better-netrw                    [https://gist.github.com/VonHeikemen/fa6f7c7f114bc36326cda2c964cb52c7](https://gist.github.com/VonHeikemen/fa6f7c7f114bc36326cda2c964cb52c7)
                                                                                                                                                                                                                     et parens += [right]
 # References
 
@@ -104,7 +117,6 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 
 # TODO list
 
-1. [ ] Fix the `<leader>l` REPL command.
 1. [ ] Test all default keybindings.
 1. [ ] Do first release.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
@@ -119,4 +131,7 @@ au FileType Scheme,Racket let g:vtfs_repl_cols = 50
 au FileType Scheme,Racket let g:vtfs_repl_rows = 12
 au FileType Scheme let g:vtfs_lsp_chez_scheme_multithread = 1
 au FileType Scheme let g:vtfs_lsp_chez_scheme_type_inference = 1
+" This vim package provides opinionated "better" settings and mappings for Netrw which is the file tray for vim!
+au Filetype netrw let b:vtfs_enable_netrw_mappings = 1
+au Filetype netrw let b:vtfs_enable_netrw_settings = 1
 ```
