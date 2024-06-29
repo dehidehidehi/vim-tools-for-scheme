@@ -3,6 +3,15 @@ let g:lsp_settings = {
 			\  'racket-lsp': {'allowlist': ['racket', 'scheme']},
 			\ }
 
+if !exists("*s:IsPluginFound")
+	function! s:IsPluginFound(plugin_name) abort
+		" The vim runtime only uses the name of the package, not the author
+		" namespace
+		let plugin_name = split(a:plugin_name, '/')[1]
+		return match(&runtimepath, plugin_name) != -1
+	endfunction
+endif
+
 augroup vtfs_global_user_settings " {{{
 	if !exists('g:vtfs_lsp_chez_scheme_multithread')               | let g:vtfs_lsp_chez_scheme_multithread = 1 | endif
 	if !exists('g:vtfs_lsp_chez_scheme_type_inference')            | let g:vtfs_lsp_chez_scheme_type_inference = 1 | endif
@@ -74,6 +83,7 @@ augroup vtfs_global_lsp_chez_scheme " {{{
 						\	],
 						\	'allowlist': ['scheme']
 						\	})
+		endif
 	endif
 augroup END
 

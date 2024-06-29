@@ -38,15 +38,6 @@ augroup END " }}}
 
 augroup vtfs_plugins " {{{
 
-	if !exists("*s:IsPluginFound")
-		function! s:IsPluginFound(plugin_name) abort
-				" The vim runtime only uses the name of the package, not the author
-				" namespace
-				let plugin_name = split(a:plugin_name, '/')[1]
-				return match(&runtimepath, plugin_name) != -1
-		endfunction
-	endif
-
 	if !exists("*s:IsMapped")
 		function! s:IsMapped(mapping, mode) abort
 			let result = mapcheck(a:mapping, a:mode)
