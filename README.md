@@ -77,6 +77,12 @@ Building `chez-scheme` then building `scheme-langserver` isn't the easiest task,
 For now I have provided an [ansible script which details how I have automated this process](scripts/install-chez-scheme-and-langserver.yml).  
 I have yet to convert this to a pure `shell` script, but I hope it will give you guidance.
 
+**You must** place the scheme lsp server executable on the system path with the name `scheme-langserver`.  
+If you prefer to name it otherwise, remember to set the following setting with the appropriate name:  
+```vim
+let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
+```
+
 ## 3. Testing if it works for you
 
 Let's load this plugin using a minimized .vimrc configuration.  
@@ -184,6 +190,11 @@ When loading the Scheme REPL, defines how many rows the REPL buffer should occup
 The default value is `12`.  
 ```vim
 au FileType scheme let g:vtfs_repl_rows = 12
+```
+
+If your (optionally) compiled scheme lsp executable has another name than `scheme-langserver`, you must specify it's name using the following property.
+```vim
+au FileType scheme let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
 ```
 
 Disable multithreading for the `scheme-langserver` using `0`.  

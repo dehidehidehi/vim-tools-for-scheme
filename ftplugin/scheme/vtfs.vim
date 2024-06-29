@@ -24,6 +24,7 @@ augroup vtfs_user_settings " {{{
 	let b:vtfs_repl_rows = 12
 	let g:vtfs_lsp_chez_scheme_multithread = 1
 	let g:vtfs_lsp_chez_scheme_type_inference = 1
+	let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
 	" let g:vtfs_my_vimrc = empty(expand('$MYVIMRC')) ? expand('~/.vimrc') : expand('$MYVIMRC')
 augroup END " }}}
 
@@ -185,7 +186,7 @@ augroup END " }}}
 augroup vtfs_lsp_chez_scheme " {{{
 	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 		" Register scheme-langserver if it is installed
-		if (executable('scheme-langserver'))
+		if (executable(g:vtfs_lsp_chez_scheme_lsp_executable_name))
 			if !exists('g:scheme_langserver_logs_file') | let g:scheme_langserver_logs_file = s:lsp_logs_dir . '/scheme-langserver-' . s:today . '.log' | endif
 			call lsp#register_server({
 						\ 'name': 'scheme-langserver',
