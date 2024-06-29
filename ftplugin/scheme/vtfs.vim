@@ -132,6 +132,12 @@ augroup vtfs_repl " {{{
 augroup END " }}}
 
 augroup vtfs_lsp_configuration " {{{
+	" Lsp sane defaults
+	let g:lsp_settings = {
+				\  'scheme-langserver': {'allowlist': ['scheme']},
+				\  'racket-lsp': {'allowlist': ['racket', 'scheme']},
+				\ }
+
 	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 		setlocal omnifunc& omnifunc=lsp#complete
 
@@ -141,12 +147,6 @@ augroup vtfs_lsp_configuration " {{{
 		if !exists('g:lsp_log_file') | let g:lsp_log_file = s:lsp_logs_dir . "/vim-lsp-" . s:today . ".log" | endif
 		if !exists('g:lsp_show_message_log_level') | let g:lsp_show_message_log_level = 'warning' | endif
 		if !isdirectory(s:lsp_logs_dir) | call mkdir(s:lsp_logs_dir) | endif
-
-		" Lsp sane defaults
-		let g:lsp_settings = {
-					\  'scheme-langserver': {'allowlist': ['scheme']},
-					\  'racket-lsp': {'allowlist': ['racket', 'scheme']},
-					\ }
 
 		if !exists('g:lsp_auto_enable')                                    | let g:lsp_auto_enable = 1 | endif
 		if !exists('g:lsp_code_action_ui')                                 | let g:lsp_code_action_ui = 'float' | endif
