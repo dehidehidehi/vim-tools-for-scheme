@@ -13,18 +13,16 @@ filetype plugin indent on
 au BufRead scheme syntax on
 
 augroup vtfs_user_settings " {{{
-	let b:vtfs_enable_netrw_mappings = 1
-	let b:vtfs_enable_netrw_settings = 1
-	let b:vtfs_lsp_diagnostics_echo_enabled = 1
+	if !exists('b:vtfs_lsp_diagnostics_echo_enabled')              | let b:vtfs_lsp_diagnostics_echo_enabled = 1 | endif
+	if !exists('b:vtfs_no_lsp_maps')                               | let b:vtfs_no_lsp_maps = 0 | endif
+	if !exists('b:vtfs_paren_search_timeout')                      | let b:vtfs_paren_search_timeout = 50 | endif
+	if !exists('b:vtfs_paren_search_top')                          | let b:vtfs_paren_search_top = 1 | endif
+	if !exists('b:vtfs_repl_cols')                                 | let b:vtfs_repl_cols = 50 | endif
+	if !exists('b:vtfs_repl_rows')                                 | let b:vtfs_repl_rows = 12 | endif
+augroup END " }}}
+
+augroup vtfs_state " {{{
 	let b:vtfs_lsp_diagnostics_enabled = 1
-	let b:vtfs_no_lsp_maps = 0
-	let b:vtfs_paren_search_timeout = 50
-	let b:vtfs_paren_search_top = 1
-	let b:vtfs_repl_cols = 50
-	let b:vtfs_repl_rows = 12
-	let g:vtfs_lsp_chez_scheme_multithread = 1
-	let g:vtfs_lsp_chez_scheme_type_inference = 1
-	" let g:vtfs_my_vimrc = empty(expand('$MYVIMRC')) ? expand('~/.vimrc') : expand('$MYVIMRC')
 augroup END " }}}
 
 augroup vtfs_set_options	" {{{
@@ -129,102 +127,7 @@ augroup vtfs_repl " {{{
 augroup END " }}}
 
 augroup vtfs_lsp_configuration " {{{
-	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 		setlocal omnifunc& omnifunc=lsp#complete
-
-		" Lsp logging configuration
-		let s:today = strftime('%Y-%m-%d', localtime())
-		let s:lsp_logs_dir = expand('~') . "/.local/share/vim-lsp-settings"
-		if !exists('g:lsp_log_file') | let g:lsp_log_file = s:lsp_logs_dir . "/vim-lsp-" . s:today . ".log" | endif
-		if !exists('g:lsp_show_message_log_level') | let g:lsp_show_message_log_level = 'warning' | endif
-		if !isdirectory(s:lsp_logs_dir) | call mkdir(s:lsp_logs_dir) | endif
-
-		" Lsp sane defaults
-		let g:lsp_settings = {
-					\  'scheme-langserver': {'allowlist': ['scheme']},
-					\  'racket-lsp': {'allowlist': ['racket', 'scheme']},
-					\ }
-
-		if !exists('g:lsp_auto_enable')                                    | let g:lsp_auto_enable = 1 | endif
-		if !exists('g:lsp_code_action_ui')                                 | let g:lsp_code_action_ui = 'float' | endif
-		if !exists('g:lsp_completion_documentation_delay')                 | let g:lsp_completion_documentation_delay = 50 | endif
-		if !exists('g:lsp_completion_documentation_enabled')               | let g:lsp_completion_documentation_enabled = 1 | endif
-		if !exists('g:lsp_diagnostics_enabled')                            | let g:lsp_diagnostics_enabled = 1 | endif
-		if !exists('g:lsp_diagnostics_float_cursor')                       | let g:lsp_diagnostics_float_cursor = 0 | endif
-		if !exists('g:lsp_diagnostics_float_insert_mode_enabled')          | let g:lsp_diagnostics_float_insert_mode_enabled = 0 | endif
-		if !exists('g:lsp_diagnostics_signs_delay')                        | let g:lsp_diagnostics_signs_delay = 1000 | endif
-		if !exists('g:lsp_diagnostics_signs_enabled')                      | let g:lsp_diagnostics_signs_enabled = 1 | endif
-		if !exists('g:lsp_diagnostics_signs_error')                        | let g:lsp_diagnostics_signs_error = {'text': '✗'} | endif
-		if !exists('g:lsp_diagnostics_signs_priority')                     | let g:lsp_diagnostics_signs_priority = 11 | endif
-		if !exists('g:lsp_diagnostics_signs_warning')                      | let g:lsp_diagnostics_signs_warning = {'text': '‼'} | endif
-		if !exists('g:lsp_diagnostics_virtual_text_align')                 | let g:lsp_diagnostics_virtual_text_align = 'below' | endif
-		if !exists('g:lsp_diagnostics_virtual_text_delay')                 | let g:lsp_diagnostics_virtual_text_delay = 1000 | endif
-		if !exists('g:lsp_diagnostics_virtual_text_enabled')               | let g:lsp_diagnostics_virtual_text_enabled = 1 | endif
-		if !exists('g:lsp_diagnostics_virtual_text_insert_mode_enabled')   | let g:lsp_diagnostics_virtual_text_insert_mode_enabled = 0 | endif
-		if !exists('g:lsp_diagnostics_virtual_text_padding_left')          | let g:lsp_diagnostics_virtual_text_padding_left = 10 | endif
-		if !exists('g:lsp_diagnostics_virtual_text_prefix')                | let g:lsp_diagnostics_virtual_text_prefix = " ‣ " | endif
-		if !exists('g:lsp_diagnostics_virtual_text_wrap')                  | let g:lsp_diagnostics_virtual_text_wrap = 'wrap' | endif
-		if !exists('g:lsp_document_code_action_signs_hint')                | let g:lsp_document_code_action_signs_hint = {'text': 'A>'} | endif
-		if !exists('g:lsp_document_highlight_delay')                       | let g:lsp_document_highlight_delay = 25 | endif
-		if !exists('g:lsp_document_highlight_enabled')                     | let g:lsp_document_highlight_enabled = 1 | endif
-		if !exists('g:lsp_fold_enabled')                                   | let g:lsp_fold_enabled = 1 | endif
-		if !exists('g:lsp_ignorecase')                                     | let g:lsp_ignorecase = 1 | endif
-		if !exists('g:lsp_inlay_hints_enabled')                            | let g:lsp_inlay_hints_enabled = 1 | endif
-		if !exists('g:lsp_insert_text_enabled')                            | let g:lsp_insert_text_enabled = 0 | endif
-		if !exists('g:lsp_peek_alignment')                                 | let g:lsp_peek_alignment = 'top' | endif
-		if !exists('g:lsp_preview_keep_focus')                             | let g:lsp_preview_keep_focus = 0 | endif
-		if !exists('g:lsp_preview_max_height')                             | let g:lsp_preview_max_height = 50 | endif
-		if !exists('g:lsp_semantic_enabled')                               | let g:lsp_semantic_enabled = 1 | endif
-		if !exists('g:lsp_settings_enable_suggestions')                    | let g:lsp_settings_enable_suggestions = 1 | endif
-		if !exists('g:lsp_snippet_expand')                                 | let g:lsp_snippet_expand = 1 | endif
-		if !exists('g:lsp_text_edit_enabled')                              | let g:lsp_text_edit_enabled = 1 | endif
-		if !exists('g:lsp_textprop_enabled')                               | let g:lsp_textprop_enabled = 1 | endif
-	endif
-augroup END " }}}
-
-augroup vtfs_lsp_chez_scheme " {{{
-	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
-		" Register scheme-langserver if it is installed
-		if (executable('scheme-langserver'))
-			if !exists('g:scheme_langserver_logs_file') | let g:scheme_langserver_logs_file = s:lsp_logs_dir . '/scheme-langserver-' . s:today . '.log' | endif
-			call lsp#register_server({
-						\ 'name': 'scheme-langserver',
-						\ 'cmd': [
-						\		'scheme-langserver',
-						\		g:scheme_langserver_logs_file,
-						\		g:vtfs_lsp_chez_scheme_multithread == 1 ? "enable" : "disable",
-						\		g:vtfs_lsp_chez_scheme_type_inference == 1 ? "enable" : "disable"
-						\	],
-						\	'allowlist': ['scheme']
-						\	})
-	endif
-
-	" On probation it doesn't restart the server today.
-	" Am I missing dependencies?
-	"
-	" " The chez_scheme langserver crashes often, let's create a loop which
-	" " detects that then automatically boot it back up, asyncronously.
-	" au BufEnter,BufRead,BufNewFile *.ss,*.scm,*.sls,*.sps call timer_start(0, {-> s:VtfsLspChezSchemeStatus()})
-	" if !exists("*s:VtfsLspChezSchemeStatus)
-	" function! s:VtfsLspChezSchemeStatus() abort
-	" 	call timer_start(0, {-> s:VtfsLspChezSchemeStatusAsync()})
-	" endfunction
-	" endif
-	" if !exists("*s:VtfsLspChezSchemeStatusAsync")
-	" function! s:VtfsLspChezSchemeStatusAsync() abort
-	" 	try
-	" 		let output = execute('LspStatus')
-	" 		if match(output, 'scheme-langserver: not running') >= 0 || match(output, 'scheme-langserver: exited') >= 0
-	" 			echo '/!\ scheme-langserver has died, re-booting it.'
-	" 			source g:vtfs_my_vimrc
-	" 			return 1
-	" 		endif
-	" 	catch
-	" 		echo v:exception
-	" 	endtry
-	" endfunction
-	" endif
-	endif
 augroup END " }}}
 
 augroup vtfs_helper_functions " {{{
@@ -296,71 +199,8 @@ augroup vtfs_helper_functions " {{{
 	" FindMatchingParenType }}}
 augroup END " }}}
 
-augroup vtfs_netrw " {{{
-
-	if b:vtfs_enable_netrw_mappings == 1 " {{{
-			" Go to file and close Netrw window
-			" nmap <buffer> L <CR>:Rex<CR>
-			" Go back in history
-			au Filetype netrw nmap <buffer> H u
-			" Go up a directory
-			au Filetype netrw nmap <buffer> h -^
-			" Go down a directory / open file
-			" Toggle dotfiles
-			au Filetype netrw nmap <buffer> . gh
-			" Toggle the mark on a file
-			au Filetype netrw nmap <buffer> <TAB> mf
-			" Unmark all files in the buffer
-			" au Filetype netrw nmap <buffer> <S-TAB> mF
-			" Unmark all files
-			au Filetype netrw nmap <buffer> <LocalLeader><TAB> mu
-			" 'Bookmark' a directory
-			au Filetype netrw nmap <buffer> bb mb
-			" Delete the most recent directory bookmark
-			au Filetype netrw nmap <buffer> bd mB
-			" Got to a directory on the most recent bookmark
-			au Filetype netrw nmap <buffer> bl gb
-			" Create a file
-			au Filetype netrw nmap <buffer> ff %:w<CR>:buffer #<CR>
-			" Rename a file
-			au Filetype netrw nmap <buffer> fe R
-			" Copy marked files in the directory under cursor
-			au Filetype netrw nmap <buffer> fc mtmc
-			" Move marked files in the directory under cursor
-			au Filetype netrw nmap <buffer> fx mtmm
-			" Execute a command on marked files
-			au Filetype netrw nmap <buffer> f; mx
-			" Show the list of marked files
-			au Filetype netrw nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
-			" Show the current target directory
-			au Filetype netrw nmap <buffer> fq :echo 'Target:' . netrw#Expose("netrwmftgt")<CR>
-			" Set the directory under the cursor as the current target
-			au Filetype netrw nmap <buffer> fd mtfq
-			" Delete a file
-			au Filetype netrw nmap <buffer> FF :call NetrwRemoveRecursive()<CR>
-			" Close the preview window
-			au Filetype netrw nmap <buffer> P <C-w>z
-			" Open all selected files in a new tab
-			au Filetype netrw nmap <silent> <buffer> <C-t> ma:argdo tabnew<CR>
-	endif " }}}
-
-		if b:vtfs_enable_netrw_settings == 1 " {{{
-			au FileType netrw let g:netrw_list_hide = netrw_gitignore#Hide() . '*\+\.swp,*\+\.un~'
-			au FileType netrw let g:netrw_keepdir = 0
-			au FileType netrw let g:netrw_fastbrowse = 0
-			au FileType netrw let g:netrw_banner = 0
-			au FileType netrw let g:netrw_browse_split = 0
-			au FileType netrw let g:netrw_hide = 1
-			au FileType netrw let g:netrw_liststyle = 0
-			au FileType netrw let g:netrw_sizestyle = "H"
-			au FileType netrw let g:netrw_winsize = 20
-			au FileType netrw let g:netrw_localcopydircmd = 'cp -r'
-		endif  " }}}
-	
-augroup END " }}}
-
 augroup vtrs_default_keybindings " {{{
-	if !exists('g:vtfs_no_lsp_maps')
+	if b:vtfs_no_lsp_maps != 1
 
 		inoremap <Plug>VtfsInsertLambdaSymbol; λ
 		if !hasmapto('<Plug>VtfsInsertLambdaSymbol;') && s:IsMapped("<C-\\>", "i")
@@ -389,7 +229,7 @@ augroup vtrs_default_keybindings " {{{
 
 		if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 
-			nnoremap <Plug>VtfsLspToggleDiagnostics; :VtfsLspToggleDiagnostics()<CR>
+			nnoremap <Plug>VtfsLspToggleDiagnostics; :VtfsLspToggleDiagnostics<CR>
 			if !hasmapto('<Plug>VtfsLspToggleDiagnostics;') && s:IsMapped("<Leader>W", "n")
 			 	nnoremap <buffer> <unique> <LocalLeader>W <Plug>VtfsLspToggleDiagnostics;
 		 	endif

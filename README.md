@@ -77,6 +77,12 @@ Building `chez-scheme` then building `scheme-langserver` isn't the easiest task,
 For now I have provided an [ansible script which details how I have automated this process](scripts/install-chez-scheme-and-langserver.yml).  
 I have yet to convert this to a pure `shell` script, but I hope it will give you guidance.
 
+**You must** place the scheme lsp server executable on the system path with the name `scheme-langserver`.  
+If you prefer to name it otherwise, remember to set the following setting with the appropriate name:  
+```vim
+let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
+```
+
 ## 3. Testing if it works for you
 
 Let's load this plugin using a minimized .vimrc configuration.  
@@ -172,41 +178,56 @@ Some examples of provided remaps :
 
 # Customizable settings
 
-On large screens, the REPL appears on the side of the current buffer.  
-When loading the Scheme REPL, defines how many column the REPL buffer should occupy on large screens.  
-The default value is `50`.  
 ```vim
 au FileType scheme let g:vtfs_repl_cols = 50
 ```
+On large screens, the REPL appears on the side of the current buffer.  
+When loading the Scheme REPL, defines how many column the REPL buffer should occupy on large screens.  
+The default value is `50`.  
 
-On smaller screens, the REPL appears under the current buffer.  
-When loading the Scheme REPL, defines how many rows the REPL buffer should occupy on smaller screens.  
-The default value is `12`.  
 ```vim
 au FileType scheme let g:vtfs_repl_rows = 12
 ```
+On smaller screens, the REPL appears under the current buffer.  
+When loading the Scheme REPL, defines how many rows the REPL buffer should occupy on smaller screens.  
+The default value is `12`.  
 
-Disable multithreading for the `scheme-langserver` using `0`.  
-Do note `multithreading` requires that the `chez scheme` executable on your system be built with the `--threads` parameter, as stated in the [`chez-scheme` build instructions](https://github.com/ufo5260987423/scheme-langserver?tab=readme-ov-file#building).  
+```vim
+au FileType scheme let b:vtfs_no_lsp_maps = 1
+```
+Disable the provided Vim LSP remaps.
+
+```vim
+au FileType scheme let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
+```
+If your (optionally) compiled scheme lsp executable has another name than `scheme-langserver`, you must specify it's name using the following property.
+
 ```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_multithread = 0
 ```
+Disable multithreading for the `scheme-langserver` using `0`.  
+Do note `multithreading` requires that the `chez scheme` executable on your system be built with the `--threads` parameter, as stated in the [`chez-scheme` build instructions](https://github.com/ufo5260987423/scheme-langserver?tab=readme-ov-file#building).  
 
-Disable type inference for the `scheme-langserver` using `0`.  
-Do note the `type inference` feature of the LSP requires enabling `multithreading`.  
 ```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_type_inference = 0
 ```
+Disable type inference for the `scheme-langserver` using `0`.  
+Do note the `type inference` feature of the LSP requires enabling `multithreading`.  
 
+```vim
+au Filetype netrw let g:vtfs_enable_netrw_mappings = 0
+```
 Disable provided netrw remaps using `0`.
-```vim
-au Filetype netrw let b:vtfs_enable_netrw_mappings = 0
-```
 
-Disable provided netrw settings using `0`.
 ```vim
-au Filetype netrw let b:vtfs_enable_netrw_settings = 0
+au Filetype netrw let g:vtfs_enable_netrw_settings = 0
 ```
+Disable provided netrw settings using `0`.
+
+```vim
+au Filetype scheme b:vtfs_lsp_diagnostics_echo_enabled = 0
+```
+Disable the `LSP Diagnostics ON/OFF` echo message.
 
 # Credits
 
@@ -229,4 +250,5 @@ au Filetype netrw let b:vtfs_enable_netrw_settings = 0
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`
 1. [ ] Provide functions and keybindings for RNRS documentation pop-ups from within Vim.
+
 
