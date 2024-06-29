@@ -215,12 +215,12 @@ Disable type inference for the `scheme-langserver` using `0`.
 Do note the `type inference` feature of the LSP requires enabling `multithreading`.  
 
 ```vim
-au Filetype netrw let b:vtfs_enable_netrw_mappings = 0
+au Filetype netrw let g:vtfs_enable_netrw_mappings = 0
 ```
 Disable provided netrw remaps using `0`.
 
 ```vim
-au Filetype netrw let b:vtfs_enable_netrw_settings = 0
+au Filetype netrw let g:vtfs_enable_netrw_settings = 0
 ```
 Disable provided netrw settings using `0`.
 
