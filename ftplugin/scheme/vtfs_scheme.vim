@@ -229,7 +229,7 @@ augroup vtrs_default_keybindings " {{{
 
 		if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 
-			nnoremap <Plug>VtfsLspToggleDiagnostics; :VtfsLspToggleDiagnostics()<CR>
+			nnoremap <Plug>VtfsLspToggleDiagnostics; :VtfsLspToggleDiagnostics<CR>
 			if !hasmapto('<Plug>VtfsLspToggleDiagnostics;') && s:IsMapped("<Leader>W", "n")
 			 	nnoremap <buffer> <unique> <LocalLeader>W <Plug>VtfsLspToggleDiagnostics;
 		 	endif
