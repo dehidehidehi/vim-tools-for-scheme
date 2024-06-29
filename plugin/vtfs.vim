@@ -27,7 +27,7 @@ augroup vtfs_global_lsp_configuration " {{{
 	let g:lsp_logs_dir = expand('~') . "/.local/share/vim-lsp-settings"
 	if !isdirectory(g:lsp_logs_dir) | call mkdir(g:lsp_logs_dir) | endif
 
-	if !exists('g:lsp_log_file') | let g:lsp_log_file = s:lsp_logs_dir . "/vim-lsp-" . s:today . ".log" | endif
+	if !exists('g:lsp_log_file') | let g:lsp_log_file = g:lsp_logs_dir . "/vim-lsp-" . g:today . ".log" | endif
 	if !exists('g:lsp_show_message_log_level') | let g:lsp_show_message_log_level = 'warning' | endif
 
 	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
@@ -72,7 +72,9 @@ augroup vtfs_global_lsp_chez_scheme " {{{
 	if (s:IsPluginFound("prabirshrestha/vim-lsp"))
 		" Register scheme-langserver if it is installed
 		if (executable(g:vtfs_lsp_chez_scheme_lsp_executable_name))
-			if !exists('g:scheme_langserver_logs_file') | let g:scheme_langserver_logs_file = g:lsp_logs_dir . '/scheme-langserver-' . g:today . '.log' | endif
+			if !exists('g:scheme_langserver_logs_file')
+				let g:scheme_langserver_logs_file = g:lsp_logs_dir . '/scheme-langserver-' . g:today . '.log'
+			endif
 			call lsp#register_server({
 						\ 'name': 'scheme-langserver',
 						\ 'cmd': [
@@ -101,3 +103,4 @@ augroup vtfs_global_netrw " {{{
 		let g:netrw_localcopydircmd = 'cp -r'
 	endif  " }}}
 augroup END
+
