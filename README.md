@@ -193,6 +193,11 @@ When loading the Scheme REPL, defines how many rows the REPL buffer should occup
 The default value is `12`.  
 
 ```vim
+au FileType scheme let b:vtfs_no_lsp_maps = 1
+```
+Disable the provided Vim LSP remaps.
+
+```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
 ```
 If your (optionally) compiled scheme lsp executable has another name than `scheme-langserver`, you must specify it's name using the following property.
@@ -219,6 +224,11 @@ au Filetype netrw let b:vtfs_enable_netrw_settings = 0
 ```
 Disable provided netrw settings using `0`.
 
+```vim
+au Filetype scheme b:vtfs_lsp_diagnostics_echo_enabled = 0
+```
+Disable the `LSP Diagnostics ON/OFF` echo message.
+
 # Credits
 
 - Vim Plugin        vim/simpl						[https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
@@ -240,4 +250,5 @@ Disable provided netrw settings using `0`.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`
 1. [ ] Provide functions and keybindings for RNRS documentation pop-ups from within Vim.
+
 

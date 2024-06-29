@@ -16,7 +16,6 @@ augroup vtfs_user_settings " {{{
 	if !exists('b:vtfs_enable_netrw_mappings')                     | let b:vtfs_enable_netrw_mappings = 1 | endif
 	if !exists('b:vtfs_enable_netrw_settings')                     | let b:vtfs_enable_netrw_settings = 1 | endif
 	if !exists('b:vtfs_lsp_diagnostics_echo_enabled')              | let b:vtfs_lsp_diagnostics_echo_enabled = 1 | endif
-	if !exists('b:vtfs_lsp_diagnostics_enabled')                   | let b:vtfs_lsp_diagnostics_enabled = 1 | endif
 	if !exists('b:vtfs_no_lsp_maps')                               | let b:vtfs_no_lsp_maps = 0 | endif
 	if !exists('b:vtfs_paren_search_timeout')                      | let b:vtfs_paren_search_timeout = 50 | endif
 	if !exists('b:vtfs_paren_search_top')                          | let b:vtfs_paren_search_top = 1 | endif
@@ -25,6 +24,10 @@ augroup vtfs_user_settings " {{{
 	if !exists('g:vtfs_lsp_chez_scheme_multithread')               | let g:vtfs_lsp_chez_scheme_multithread = 1 | endif
 	if !exists('g:vtfs_lsp_chez_scheme_type_inference')            | let g:vtfs_lsp_chez_scheme_type_inference = 1 | endif
 	if !exists('g:vtfs_lsp_chez_scheme_lsp_executable_name')       | let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver" | endif
+augroup END " }}}
+
+augroup vtfs_state " {{{
+	let b:vtfs_lsp_diagnostics_enabled = 1
 augroup END " }}}
 
 augroup vtfs_set_options	" {{{
@@ -360,7 +363,7 @@ augroup vtfs_netrw " {{{
 augroup END " }}}
 
 augroup vtrs_default_keybindings " {{{
-	if !exists('g:vtfs_no_lsp_maps')
+	if g:vtfs_no_lsp_maps != 1
 
 		inoremap <Plug>VtfsInsertLambdaSymbol; λ
 		if !hasmapto('<Plug>VtfsInsertLambdaSymbol;') && s:IsMapped("<C-\\>", "i")
