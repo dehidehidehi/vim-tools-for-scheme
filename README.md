@@ -178,46 +178,46 @@ Some examples of provided remaps :
 
 # Customizable settings
 
-On large screens, the REPL appears on the side of the current buffer.  
-When loading the Scheme REPL, defines how many column the REPL buffer should occupy on large screens.  
-The default value is `50`.  
 ```vim
 au FileType scheme let g:vtfs_repl_cols = 50
 ```
+On large screens, the REPL appears on the side of the current buffer.  
+When loading the Scheme REPL, defines how many column the REPL buffer should occupy on large screens.  
+The default value is `50`.  
 
-On smaller screens, the REPL appears under the current buffer.  
-When loading the Scheme REPL, defines how many rows the REPL buffer should occupy on smaller screens.  
-The default value is `12`.  
 ```vim
 au FileType scheme let g:vtfs_repl_rows = 12
 ```
+On smaller screens, the REPL appears under the current buffer.  
+When loading the Scheme REPL, defines how many rows the REPL buffer should occupy on smaller screens.  
+The default value is `12`.  
 
-If your (optionally) compiled scheme lsp executable has another name than `scheme-langserver`, you must specify it's name using the following property.
 ```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver"
 ```
+If your (optionally) compiled scheme lsp executable has another name than `scheme-langserver`, you must specify it's name using the following property.
 
-Disable multithreading for the `scheme-langserver` using `0`.  
-Do note `multithreading` requires that the `chez scheme` executable on your system be built with the `--threads` parameter, as stated in the [`chez-scheme` build instructions](https://github.com/ufo5260987423/scheme-langserver?tab=readme-ov-file#building).  
 ```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_multithread = 0
 ```
+Disable multithreading for the `scheme-langserver` using `0`.  
+Do note `multithreading` requires that the `chez scheme` executable on your system be built with the `--threads` parameter, as stated in the [`chez-scheme` build instructions](https://github.com/ufo5260987423/scheme-langserver?tab=readme-ov-file#building).  
 
-Disable type inference for the `scheme-langserver` using `0`.  
-Do note the `type inference` feature of the LSP requires enabling `multithreading`.  
 ```vim
 au FileType scheme let g:vtfs_lsp_chez_scheme_type_inference = 0
 ```
+Disable type inference for the `scheme-langserver` using `0`.  
+Do note the `type inference` feature of the LSP requires enabling `multithreading`.  
 
-Disable provided netrw remaps using `0`.
 ```vim
 au Filetype netrw let b:vtfs_enable_netrw_mappings = 0
 ```
+Disable provided netrw remaps using `0`.
 
-Disable provided netrw settings using `0`.
 ```vim
 au Filetype netrw let b:vtfs_enable_netrw_settings = 0
 ```
+Disable provided netrw settings using `0`.
 
 # Credits
 
