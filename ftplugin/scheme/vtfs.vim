@@ -363,7 +363,7 @@ augroup vtfs_netrw " {{{
 augroup END " }}}
 
 augroup vtrs_default_keybindings " {{{
-	if g:vtfs_no_lsp_maps != 1
+	if b:vtfs_no_lsp_maps != 1
 
 		inoremap <Plug>VtfsInsertLambdaSymbol; λ
 		if !hasmapto('<Plug>VtfsInsertLambdaSymbol;') && s:IsMapped("<C-\\>", "i")
