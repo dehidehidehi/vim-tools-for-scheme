@@ -102,7 +102,7 @@ augroup vtfs_repl " {{{
 			let b:simpl_mods = 'botright'
 		endif
 		if !exists(":VtfsReplLoad")
-			command -buffer VtfsReplLoad silent execute ":w\<CR>:call simpl#load('++cols=" . b:vtfs_repl_cols . " ++rows=" . (&lines < 30 ? ceil(b:vtfs_repl_rows * 0.66) : b:vtfs_repl_rows)."')\<CR>\<C-w>p'"
+			command -buffer VtfsReplLoad silent execute "normal! :w\<CR>:call simpl#load('++cols=" . b:vtfs_repl_cols . " ++rows=" . (&lines < 30 ? ceil(b:vtfs_repl_rows * 0.66) : b:vtfs_repl_rows)."')\<CR>\<C-w>p'"
 		endif
 		if !exists('g:interpreter')
 			let b:interpreter = (isdirectory(".akku") == 1 && executable("akku") == 1 ? ".akku/env " : "") . "scheme --quiet --compile-imported-libraries"
