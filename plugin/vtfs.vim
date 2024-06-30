@@ -3,6 +3,18 @@ let g:lsp_settings = {
 			\  'racket-lsp': {'allowlist': ['racket', 'scheme']},
 			\ }
 
+augroup vtfs_rooter " {{{
+	if (s:IsPluginFound("airblade/vim-rooter"))
+		let g:rooter_cd_cmd = 'cd'
+		let g:rooter_silent_chdir = 0
+		let g:rooter_resolve_links = 1
+		let g:rooter_patterns = [ '>.git', '.git', '>Akku.manifest', 'Akku.manifest' ]
+		if exists('g:rooter_patterns')
+			let g:rooter_patterns += g:rooter_patterns
+		endif
+	endif
+augroup END " }}}
+
 if !exists("*s:IsPluginFound")
 	function! s:IsPluginFound(plugin_name) abort
 		" The vim runtime only uses the name of the package, not the author

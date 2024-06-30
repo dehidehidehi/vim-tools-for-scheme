@@ -245,6 +245,7 @@ Disable the `LSP Diagnostics ON/OFF` echo message.
 
 # TODO 
 
+1. [ ] Add VtfsToggleTestAlternateFile functionality.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`
