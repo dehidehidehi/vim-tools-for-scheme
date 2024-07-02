@@ -8,3 +8,4 @@ au BufRead,BufNewFile *.sps7	setlocal filetype=scheme
 au BufRead,BufNewFile *.ss		setlocal filetype=scheme
 
 " TODO : detect scheme filetype in racket files using the rnrs standard
+" *.sc,*.sch,*.scm,*.sld,*.sls,*.sps,*.sps7,*.ss,
