@@ -12,7 +12,20 @@ if !exists("*s:IsPluginFound")
 	endfunction
 endif
 
+augroup vtfs_rooter " {{{
+	if (s:IsPluginFound("airblade/vim-rooter"))
+		let g:rooter_cd_cmd = 'cd'
+		let g:rooter_silent_chdir = 0
+		let g:rooter_resolve_links = 1
+		let g:rooter_patterns = [ '>.git', '.git', '>Akku.manifest', 'Akku.manifest' ]
+		if exists('g:rooter_patterns')
+			let g:rooter_patterns += g:rooter_patterns
+		endif
+	endif
+augroup END " }}}
+
 augroup vtfs_global_user_settings " {{{
+	if !exists('g:vtfs_vimrc')																		 | let g:vtfs_vimrc = $MYVIMRC | endif
 	if !exists('g:vtfs_lsp_chez_scheme_multithread')               | let g:vtfs_lsp_chez_scheme_multithread = 1 | endif
 	if !exists('g:vtfs_lsp_chez_scheme_type_inference')            | let g:vtfs_lsp_chez_scheme_type_inference = 1 | endif
 	if !exists('g:vtfs_lsp_chez_scheme_lsp_executable_name')       | let g:vtfs_lsp_chez_scheme_lsp_executable_name = "scheme-langserver" | endif
@@ -104,3 +117,5 @@ augroup vtfs_global_netrw " {{{
 	endif  " }}}
 augroup END
 
+
+" vim:fdm=marker:ts=2

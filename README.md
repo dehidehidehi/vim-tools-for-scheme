@@ -143,21 +143,30 @@ The bindings will not clobber your own vimrc configurations.
 
 | **Action**                                | default bindings / rebind with                                         |
 |-------------------------------------------|------------------------------------------------------------------------|
-| Insert the λ symbol                       | `inoremap <buffer> <unique> <C-\> <Plug>VtfsInsertLambdaSymbol;`       |
-| Open Netrw at project root                | `nnoremap <buffer> <unique> <C-n> <Plug>VtfsNetrwEx;`                  |
-| Autoclose bracket with appropriate symbol | `silent inoremap <buffer> <unique> ] <Plug>VtfsFindMatchingParenType;` |
-| Load into the REPL                        | `silent nnoremap <buffer> <LocalLeader>l    <Plug>VtfsReplLoad;`       |
-| Toggle LSP virtual text                   | `nnoremap <buffer> <LocalLeader>W    <Plug>VtfsLspToggleDiagnostics;`  |
-| LspCodeAction                             | `nnoremap <buffer> <LocalLeader>a	<Plug>VtfsLspCodeAction;`          |
-| LspReferences                             | `nnoremap <buffer> <LocalLeader>b	<Plug>VtfsLspReferences;`          |
-| LspHover                                  | `nnoremap <buffer> <LocalLeader>k	<Plug>VtfsLspHover;`               |
-| LspNextDiagnostic                         | `nnoremap <buffer> <LocalLeader>n	<Plug>VtfsLspNextDiagnostic;`      |
-| LspPreviousDiagnostic                     | `nnoremap <buffer> <LocalLeader>p	<Plug>VtfsLspPreviousDiagnostic;`  |
-| LspDefinition                             | `nnoremap <buffer> <LocalLeader>D	<Plug>VtfsLspDefinition;`          |
-| LspPeekDefinition                         | `nnoremap <buffer> <LocalLeader>d	<Plug>VtfsLspPeekDefinition;`      |
-| LspRename                                 | `nnoremap <buffer> <LocalLeader>r	<Plug>VtfsLspRename;`              |
-| LspNextError                              | `nnoremap <buffer> <LocalLeader>e	<Plug>VtfsLspNextError;`           |
-| LspPreviousError                          | `nnoremap <buffer> <LocalLeader>E	<Plug>VtfsLspPreviousError;`       |
+| Insert the λ symbol                       | `au! Filetype scheme inoremap <buffer> <unique> <C-\> <Plug>VtfsInsertLambdaSymbol;`       |
+| Open Netrw at project root                | `au! Filetype scheme nnoremap <buffer> <unique> <C-n> <Plug>VtfsNetrwEx;`                  |
+| Autoclose bracket with appropriate symbol | `au! Filetype scheme silent inoremap <buffer> <unique> ] <Plug>VtfsFindMatchingParenType;` |
+| Load into the REPL in a buffer            | `au! Filetype scheme silent nnoremap <buffer> <LocalLeader>l    <Plug>VtfsReplLoad;`       |
+| Toggle LSP virtual text                   | `au! Filetype scheme nnoremap <buffer> <LocalLeader>W    <Plug>VtfsLspToggleDiagnostics;`  |
+| LspCodeAction                             | `au! Filetype scheme nnoremap <buffer> <LocalLeader>a	<Plug>VtfsLspCodeAction;`          |
+| LspReferences                             | `au! Filetype scheme nnoremap <buffer> <LocalLeader>b	<Plug>VtfsLspReferences;`          |
+| LspHover                                  | `au! Filetype scheme nnoremap <buffer> <LocalLeader>k	<Plug>VtfsLspHover;`               |
+| LspNextDiagnostic                         | `au! Filetype scheme nnoremap <buffer> <LocalLeader>n	<Plug>VtfsLspNextDiagnostic;`      |
+| LspPreviousDiagnostic                     | `au! Filetype scheme nnoremap <buffer> <LocalLeader>p	<Plug>VtfsLspPreviousDiagnostic;`  |
+| LspDefinition                             | `au! Filetype scheme nnoremap <buffer> <LocalLeader>D	<Plug>VtfsLspDefinition;`          |
+| LspPeekDefinition                         | `au! Filetype scheme nnoremap <buffer> <LocalLeader>d	<Plug>VtfsLspPeekDefinition;`      |
+| LspRename                                 | `au! Filetype scheme nnoremap <buffer> <LocalLeader>r	<Plug>VtfsLspRename;`              |
+| LspNextError                              | `au! Filetype scheme nnoremap <buffer> <LocalLeader>e	<Plug>VtfsLspNextError;`           |
+| LspPreviousError                          | `au! Filetype scheme nnoremap <buffer> <LocalLeader>E	<Plug>VtfsLspPreviousError;`       |
+
+## Unbinded commands
+
+Some commands come without a default binding, it is up to you to decide if you want to use them.
+
+| **Command name** | Description                                             | rebind with                                                       |
+|------------------|---------------------------------------------------------|-------------------------------------------------------------------|
+| VtfsReplPopup    | Load file into a popup buffer, exit Scheme using CTRL+D | `au! Filetype scheme nnoremap <buffer> <LocalLeader>l <Plug>VtfsReplPopup;
+`
 
 ## Also included
 
@@ -229,6 +238,7 @@ au Filetype scheme b:vtfs_lsp_diagnostics_echo_enabled = 0
 ```
 Disable the `LSP Diagnostics ON/OFF` echo message.
 
+
 # Credits
 
 - Vim Plugin        vim/simpl						[https://github.com/benknoble/vim-simpl](https://github.com/benknoble/vim-simpl)
@@ -245,6 +255,7 @@ Disable the `LSP Diagnostics ON/OFF` echo message.
 
 # TODO 
 
+1. [ ] Add VtfsToggleTestAlternateFile functionality.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`

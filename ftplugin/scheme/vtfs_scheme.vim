@@ -56,18 +56,6 @@ augroup vtfs_plugins " {{{
 
 augroup END " }}}
 
-augroup vtfs_rooter " {{{
-	if (s:IsPluginFound("airblade/vim-rooter"))
-		let b:rooter_cd_cmd = 'cd'
-		let b:rooter_silent_chdir = 0
-		let b:rooter_resolve_links = 1
-		let b:rooter_patterns = [ '>.git', '.git', '>Akku.manifest', 'Akku.manifest' ]
-		if exists('g:rooter_patterns')
-			let b:rooter_patterns += g:rooter_patterns
-		endif
-	endif
-augroup END " }}}
-
 augroup vtfs_asyncomplete " {{{
 	if (s:IsPluginFound("prabirshrestha/asyncomplete.vim"))
 		let b:asyncomplete_auto_popup = 1
@@ -111,13 +99,19 @@ augroup END " }}}
 augroup vtfs_repl " {{{
 	if (s:IsPluginFound("dehidehidehi/vim-simpl"))
 		if !exists('g:simpl_mods')
-			let b:simpl_mods = (winwidth(0) < 150 ? 'botright' : 'vertical')
+			let b:simpl_mods = 'botright'
 		endif
 		if !exists(":VtfsReplLoad")
-			command -buffer VtfsReplLoad silent execute "normal! :w\<CR>:call simpl#load('++cols=".b:vtfs_repl_cols." ++rows=" . (winheight(0) < 30 ? ceil(b:vtfs_repl_rows * 0.66) : b:vtfs_repl_rows)."')\<CR>\<C-w>p'"
+			command -buffer VtfsReplLoad silent execute "normal! :w\<CR>:call simpl#load('++close', '++cols=" . b:vtfs_repl_cols . "', '++rows=" . (&lines < 30 ? ceil(b:vtfs_repl_rows * 0.66) : b:vtfs_repl_rows)."')\<CR>\<C-w>p'"
 		endif
-		if !exists('g:interpreter')
-			let b:interpreter = (isdirectory(".akku") == 1 && executable("akku") == 1 ? ".akku/env " : "") . "scheme --quiet --compile-imported-libraries"
+		if !exists(":VtfsReplPopup")
+			command -buffer VtfsReplPopup silent execute "normal! :w\<CR>:call simpl#popup_load()\<CR>"
+		endif
+		if !exists('b:interpreter')
+			let b:interpreter = '' . join([
+						\ isdirectory(".akku") && executable("akku") ? ".akku/env" : "",
+						\ 'scheme --quiet --compile-imported-libraries'
+						\], ' ')
 		endif
 		call simpl#register(
 					\ 'scheme',
@@ -127,7 +121,8 @@ augroup vtfs_repl " {{{
 augroup END " }}}
 
 augroup vtfs_lsp_configuration " {{{
-		setlocal omnifunc& omnifunc=lsp#complete
+	setlocal omnifunc& omnifunc=lsp#complete
+
 augroup END " }}}
 
 augroup vtfs_helper_functions " {{{
@@ -221,8 +216,13 @@ augroup vtrs_default_keybindings " {{{
 		if (s:IsPluginFound("dehidehidehi/vim-simpl"))
 
 				nnoremap <Plug>VtfsReplLoad; :VtfsReplLoad<CR>
-				if !hasmapto('<Plug>VtfsReplLoad;') && s:IsMapped("<Leader>l", "n")
-				 	silent nnoremap <buffer> <unique> <LocalLeader>l <Plug>VtfsReplLoad;
+				if !hasmapto('<Plug>VtfsReplLoad;') && s:IsMapped("<Leader>L", "n")
+				 	silent nnoremap <buffer> <unique> <LocalLeader>L <Plug>VtfsReplLoad;
+			 	endif
+
+				nnoremap <Plug>VtfsReplPopup; :VtfsReplPopup<CR>
+				if !hasmapto('<Plug>VtfsReplPopup;') && s:IsMapped("<Leader>l", "n")
+				 	silent nnoremap <buffer> <unique> <LocalLeader>l <Plug>VtfsReplPopup;
 			 	endif
 
 		endif
