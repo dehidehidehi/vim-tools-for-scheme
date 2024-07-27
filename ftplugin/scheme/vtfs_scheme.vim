@@ -288,7 +288,7 @@ augroup vtrs_default_keybindings " {{{
       silent inoremap <buffer> <unique> ] <Plug>VtfsFindMatchingParenType;
     endif
 
-    nmap <Plug>VtfsToggleTestAlternateFile;
+    nmap <Plug>VtfsToggleTestAlternateFile; #
     if !hasmapto('<Plug>VtfsToggleTestAlternateFile;') && s:IsMapped("#", "n")
       nmap <buffer> <unique> # <Plug>VtfsToggleTestAlternateFile;
     endif
