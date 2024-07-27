@@ -23,6 +23,7 @@ augroup END " }}}
 
 augroup vtfs_state " {{{
 	let b:vtfs_lsp_diagnostics_enabled = 1
+  let b:vtfs_is_akku_project = isdirectory(".akku") && executable("akku")
 augroup END " }}}
 
 augroup vtfs_set_options	" {{{
@@ -96,6 +97,81 @@ augroup vtfs_ultisnips " {{{
 	endif
 augroup END " }}}
 
+" vtfs_akku {{{
+
+if b:vtfs_is_akku_project
+
+  if !exists("*VtfsUpdateAkkuOnNewFileSaved")
+    function VtfsUpdateAkkuOnNewFileSaved() abort
+      " Checks if newly created scheme file is new.
+      " If yes, registers it silently into Akku via install command.
+      if(executable('git'))
+        let l:output = system('git ls-files --error-unmatch ' . expand('%'))
+        if (l:output =~ 'did not match' && filereadable(expand('%')))
+          echomsg "Registering " . expand('%:h') . ' into Akku...'
+          silent execute ':!akku install > /dev/null 2>&1 /dev/null'
+          let l:_ = system('git add ' . expand('%'))
+          echo ""
+          execute feedkeys('\<CR>')
+        endif
+      endif
+    endfunction
+  endif
+
+  au BufWritePost * if &ft == 'scheme' | call UpdateAkkuOnNewFileSaved() | endif
+
+  if !exists("*VtfsToggleTestAlternateFile")
+    function VtfsToggleTestAlternateFile()
+      " Opens a buffer in a test resource dir with a test path and a scheme
+      " package fileextension.
+      "
+      " Example: Calling the function while editing the file
+      " src/service/my-scheme-lib.sls
+      " would open a buffer having a path like such:
+      " tests/src/service/my-scheme-lib.sps
+      let l:current_path = expand('%:p')
+      let l:cwd = getcwd()
+      if l:current_path =~ l:cwd . '/tests/'
+        execute ':e ' . substitute(l:current_path, l:cwd . '/tests/', l:cwd . '/', '')[:-10] . '.sls'
+      else
+        let l:relative_path = substitute(l:current_path, l:cwd . '/', '', '')
+        let l:test_path = l:cwd . '/tests/' . substitute(l:relative_path, '\.\(sc\|sch\|scm\|sld\|sls\|sps\|sps7\|ss\)$', '', '') . '_test.sps'
+        silent execute '!mkdir -p $(dirname "' . l:test_path . '")' | redraw!
+        execute ':e ' . l:test_path
+      endif
+    endfunction
+  endif
+
+  if !exists(":VtfsToggleTestAlternateFile")
+	  command  -buffer VtfsToggleTestAlternateFile call VtfsToggleTestAlternateFile()
+  endif
+
+  if !exists("*VtfsRefreshAkkuIfNotSymlinked")
+    function VtfsRefreshAkkuIfNotSymlinked()
+      " Vim doesn't have a hook which triggers only upon new file creation.
+      " Akku requires it's `install` command to be called to register the new
+      " file.
+      " To avoid unnecessary calls to this function, we guard against akku
+      " install if we detect the installation for the current file has already been done.
+      let l:relFilePath = expand('%')
+      let l:akkuLibPath = getcwd() . "/.akku/lib"
+      let l:akkuSymlinks = system("find " . l:akkuLibPath . " -maxdepth 1 -type l -exec ls -l {} \\; | awk '{print $11}'")
+      let l:hasSymlink = (stridx(l:akkuSymlinks, "../../" . l:relFilePath) != -1) ? 1 : 0
+      if (l:hasSymlink == 0)
+        " Creating files or moving files requires Akku install to symlink and keep
+        " libraries updated.
+        echo "Installing " . expand('%:h') . "into akku's lib list!"
+        silent execute ":!akku install" | redraw!
+      endif
+    endfunction
+  endif
+
+	au! BufWrite * call VtfsRefreshAkkuIfNotSymlinked()
+
+endif
+
+" }}} vtfs akku
+
 augroup vtfs_repl " {{{
 	if (s:IsPluginFound("dehidehidehi/vim-simpl"))
 		if !exists('g:simpl_mods')
@@ -109,7 +185,7 @@ augroup vtfs_repl " {{{
 		endif
 		if !exists('b:interpreter')
 			let b:interpreter = '' . join([
-						\ isdirectory(".akku") && executable("akku") ? ".akku/env" : "",
+						\ b:vtfs_is_akku_project ? ".akku/env" : "",
 						\ 'scheme --quiet --compile-imported-libraries'
 						\], ' ')
 		endif
@@ -211,6 +287,11 @@ augroup vtrs_default_keybindings " {{{
 		if !hasmapto('<Plug>VtfsFindMatchingParenType;') && s:IsMapped("]", "i")
 		 	silent inoremap <buffer> <unique> ] <Plug>VtfsFindMatchingParenType;
 	 	endif
+
+    nmap <Plug>VtfsToggleTestAlternateFile;
+    if !hasmapto('<Plug>VtfsToggleTestAlternateFile;') && s:IsMapped("#", "n")
+      nmap <buffer> <unique> # <Plug>VtfsToggleTestAlternateFile;
+    endif
 
 		" Repl
 		if (s:IsPluginFound("dehidehidehi/vim-simpl"))

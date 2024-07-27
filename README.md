@@ -12,6 +12,7 @@ This repository aims to provide a good developper experience for Scheme:
 - [x] a modern LSP experience combining the Racket LSP and the (in development) ChezScheme LSP.
 - [x] a remap for the ']' key to automatically close parenthesis or brackets.
 - [x] sane and overridable REPL defaults with library path detection using Akku.
+- [x] switch between your code and a automatically generated test file easily using the `#` nmap.
 - [ ] support for easy procedure discoverability, find what you need without leaving Vim.
 - [ ] support for documentation pop-ups from within Vim.
 
@@ -141,13 +142,14 @@ The documentation for the LSP supported commands is available in the [vim-lsp re
 
 The bindings will not clobber your own vimrc configurations.  
 
-| **Action**                                | default bindings / rebind with                                         |
-|-------------------------------------------|------------------------------------------------------------------------|
+| **Action**                                | default bindings / rebind with                                                             |
+|-------------------------------------------|--------------------------------------------------------------------------------------------|
 | Insert the λ symbol                       | `au! Filetype scheme inoremap <buffer> <unique> <C-\> <Plug>VtfsInsertLambdaSymbol;`       |
 | Open Netrw at project root                | `au! Filetype scheme nnoremap <buffer> <unique> <C-n> <Plug>VtfsNetrwEx;`                  |
 | Autoclose bracket with appropriate symbol | `au! Filetype scheme silent inoremap <buffer> <unique> ] <Plug>VtfsFindMatchingParenType;` |
 | Load into the REPL in a buffer            | `au! Filetype scheme silent nnoremap <buffer> <LocalLeader>l    <Plug>VtfsReplLoad;`       |
 | Toggle LSP virtual text                   | `au! Filetype scheme nnoremap <buffer> <LocalLeader>W    <Plug>VtfsLspToggleDiagnostics;`  |
+| Alternate with the buffer's test file     | `au! Filetype scheme nmap <buffer> # <Plug>VtfsToggleTestAlternateFile;`
 | LspCodeAction                             | `au! Filetype scheme nnoremap <buffer> <LocalLeader>a	<Plug>VtfsLspCodeAction;`          |
 | LspReferences                             | `au! Filetype scheme nnoremap <buffer> <LocalLeader>b	<Plug>VtfsLspReferences;`          |
 | LspHover                                  | `au! Filetype scheme nnoremap <buffer> <LocalLeader>k	<Plug>VtfsLspHover;`               |
@@ -255,7 +257,6 @@ Disable the `LSP Diagnostics ON/OFF` echo message.
 
 # TODO 
 
-1. [ ] Add VtfsToggleTestAlternateFile functionality.
 1. [ ] Make vimscript suggest installation of the Akku package manager if Akku is not detected on the system.
 1. [ ] Make vimscript execute `LspInstallServer racket-lsp` if the `racket-lsp` is not installed.
 1. [ ] Provide build scripts and LSP configuration for `scheme-langserver`
