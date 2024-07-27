@@ -128,7 +128,7 @@ if !exists("*VtfsToggleTestAlternateFile")
     " Example: Calling the function while editing the file
     " src/service/my-scheme-lib.sls
     " would open a buffer having a path like such:
-    " tests/src/service/my-scheme-lib.sps
+    " tests/src/service/my-scheme-lib_test.sps
     let l:current_path = expand('%:p')
     let l:cwd = getcwd()
     if l:current_path =~ l:cwd . '/tests/'
